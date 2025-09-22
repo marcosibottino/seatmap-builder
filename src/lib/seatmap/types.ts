@@ -52,6 +52,6 @@ export type SeatMapState = {
   draftSeat: DraftSeat | null;
   startDraftSeat: () => void;
   updateDraftSeat: (x: number, y: number) => void;
-  confirmDraftSeat: () => void;
+  confirmDraftSeat: (rowId?: string, prefix?: string, color?:string) => void;
   cancelDraftSeat: () => void;
 };

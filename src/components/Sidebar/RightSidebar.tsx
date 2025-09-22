@@ -58,7 +58,7 @@ export default function SeatSidebar() {
 
         <Stack direction="row" spacing={1} flexWrap="wrap">
           {selectedSeatIds.map((sid) => (
-            <Chip key={sid} label={seats[sid]?.label} size="small" />
+            <Chip key={`${sid}-${seats[sid]?.label}`} label={seats[sid]?.label} size="small" />
           ))}
         </Stack>
 
@@ -145,7 +145,7 @@ export default function SeatSidebar() {
           color="primary"
           onClick={() => {
             clearSelection();
-            useSeatMap.getState().confirmDraftSeat();
+            useSeatMap.getState().confirmDraftSeat(targetRow, prefix, color);
             showMessage("Cambios guardados ✔");
           }}
         >

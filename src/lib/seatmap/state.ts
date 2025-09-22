@@ -9,11 +9,52 @@ export const useSeatMap = create<SeatMapState>((set, get) => ({
     selectedRowIds: [],
     draftSeat: null,
 
+    // addRow: () => {
+    //     let newRowId = "";
+    //     set((state) => {
+    //         const rowIndex = state.rows.length;
+    //         newRowId = `row-${rowIndex}`;
+    //         const newRow: Row = {
+    //             id: newRowId,
+    //             label: String.fromCharCode(65 + rowIndex),
+    //             seatIds: [],
+    //             color: randomColor(),
+    //             seatPrefix: String.fromCharCode(65 + rowIndex),
+    //         };
+
+    //         let newSeats = { ...state.seats };
+    //         let updatedDraftSeat = state.draftSeat;
+
+    //         if (updatedDraftSeat) {
+    //             const newSeatId = `${newRowId}-0`;
+    //             newSeats[newSeatId] = {
+    //                 id: newSeatId,
+    //                 label: `${newRow.seatPrefix}1`,
+    //                 rowId: newRowId,
+    //                 x: updatedDraftSeat.x,
+    //                 y: updatedDraftSeat.y,
+    //                 color: newRow.color,
+    //             };
+    //             newRow.seatIds.push(newSeatId);
+    //             updatedDraftSeat = null;
+    //         }
+
+    //         return {
+    //             rows: [...state.rows, newRow],
+    //             seats: newSeats,
+    //             draftSeat: updatedDraftSeat,
+    //         };
+    //     });
+    //     return newRowId;
+    // },
+
+
     addRow: () => {
         let newRowId = "";
         set((state) => {
             const rowIndex = state.rows.length;
             newRowId = `row-${rowIndex}`;
+
             const newRow: Row = {
                 id: newRowId,
                 label: String.fromCharCode(65 + rowIndex),
@@ -22,33 +63,12 @@ export const useSeatMap = create<SeatMapState>((set, get) => ({
                 seatPrefix: String.fromCharCode(65 + rowIndex),
             };
 
-            let newSeats = { ...state.seats };
-            let updatedDraftSeat = state.draftSeat;
-
-            if (updatedDraftSeat) {
-                const newSeatId = `${newRowId}-0`;
-                newSeats[newSeatId] = {
-                    id: newSeatId,
-                    label: `${newRow.seatPrefix}1`,
-                    rowId: newRowId,
-                    x: updatedDraftSeat.x,
-                    y: updatedDraftSeat.y,
-                    color: newRow.color,
-                };
-                newRow.seatIds.push(newSeatId);
-                updatedDraftSeat = null;
-            }
-
             return {
                 rows: [...state.rows, newRow],
-                seats: newSeats,
-                draftSeat: updatedDraftSeat,
             };
         });
         return newRowId;
     },
-
-
 
 
 
@@ -365,27 +385,40 @@ export const useSeatMap = create<SeatMapState>((set, get) => ({
         set({ draftSeat: { ...draftSeat, x, y } });
     },
 
-    confirmDraftSeat: () => {
-        const { draftSeat, seats } = get();
+    confirmDraftSeat: (rowId?: string, prefix?: string, color?: string) => {
+        const { draftSeat, seats, rows } = get();
         if (!draftSeat) return;
 
         const newSeatId = `custom-${Date.now()}`;
 
+        const seatPrefix = prefix || "S";
+
         const newSeat: Seat = {
             id: newSeatId,
-            label: `S${Object.keys(seats).length + 1}`,
-            rowId: "free",
+            label: `${seatPrefix}${Object.keys(seats).length + 1}`,
+            rowId: rowId || "free",
             x: draftSeat.x,
             y: draftSeat.y,
-            color: "#bdbdbd",
+            color: color || "#bdbdbd",
         };
+
+
+        // Asignar el asiento a la fila, si existe
+        let updatedRows = rows;
+        if (rowId) {
+            updatedRows = rows.map((r) =>
+                r.id === rowId ? { ...r, seatIds: [...r.seatIds, newSeatId] } : r
+            );
+        }
 
         set({
             seats: { ...seats, [newSeatId]: newSeat },
             draftSeat: null,
             selectedSeatIds: [newSeatId],
+            rows: updatedRows,
         });
     },
+
 
 
 

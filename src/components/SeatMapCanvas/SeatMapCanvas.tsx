@@ -60,6 +60,7 @@ export default function SeatMapCanvas() {
 
                     {draftSeat && (
                         <Circle
+                            key="draft-seat"
                             x={draftSeat.x}
                             y={draftSeat.y}
                             radius={12}
