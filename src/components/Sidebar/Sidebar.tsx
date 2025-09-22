@@ -190,8 +190,11 @@ export default function Sidebar() {
                         </ListItemIcon>
                         <ListItemText
                             primary="Asiento nuevo"
-                            secondary="Arrastre el asiento donde desee"
-                            slotProps={{
+                            secondary={
+                                rows.length === 0
+                                    ? "Primero se necesita crear una fila"
+                                    : "Arrastre el asiento donde desee"
+                            } slotProps={{
                                 secondary: {
                                     sx: { fontSize: 11, color: "grey.600" }
                                 }
