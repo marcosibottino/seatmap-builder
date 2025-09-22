@@ -188,7 +188,15 @@ export default function Sidebar() {
                         <ListItemIcon>
                             <AddLocationAltIcon fontSize="small" />
                         </ListItemIcon>
-                        <ListItemText primary="Asiento nuevo" />
+                        <ListItemText
+                            primary="Asiento nuevo"
+                            secondary="Arrastre el asiento donde desee"
+                            slotProps={{
+                                secondary: {
+                                    sx: { fontSize: 11, color: "grey.600" }
+                                }
+                            }}
+                        />
                     </ListItemButton>
                 </List>
             </Drawer>

@@ -9,46 +9,6 @@ export const useSeatMap = create<SeatMapState>((set, get) => ({
     selectedRowIds: [],
     draftSeat: null,
 
-    // addRow: () => {
-    //     let newRowId = "";
-    //     set((state) => {
-    //         const rowIndex = state.rows.length;
-    //         newRowId = `row-${rowIndex}`;
-    //         const newRow: Row = {
-    //             id: newRowId,
-    //             label: String.fromCharCode(65 + rowIndex),
-    //             seatIds: [],
-    //             color: randomColor(),
-    //             seatPrefix: String.fromCharCode(65 + rowIndex),
-    //         };
-
-    //         let newSeats = { ...state.seats };
-    //         let updatedDraftSeat = state.draftSeat;
-
-    //         if (updatedDraftSeat) {
-    //             const newSeatId = `${newRowId}-0`;
-    //             newSeats[newSeatId] = {
-    //                 id: newSeatId,
-    //                 label: `${newRow.seatPrefix}1`,
-    //                 rowId: newRowId,
-    //                 x: updatedDraftSeat.x,
-    //                 y: updatedDraftSeat.y,
-    //                 color: newRow.color,
-    //             };
-    //             newRow.seatIds.push(newSeatId);
-    //             updatedDraftSeat = null;
-    //         }
-
-    //         return {
-    //             rows: [...state.rows, newRow],
-    //             seats: newSeats,
-    //             draftSeat: updatedDraftSeat,
-    //         };
-    //     });
-    //     return newRowId;
-    // },
-
-
     addRow: () => {
         let newRowId = "";
         set((state) => {
@@ -403,7 +363,6 @@ export const useSeatMap = create<SeatMapState>((set, get) => ({
         };
 
 
-        // Asignar el asiento a la fila, si existe
         let updatedRows = rows;
         if (rowId) {
             updatedRows = rows.map((r) =>
